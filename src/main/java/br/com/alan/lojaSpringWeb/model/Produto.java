@@ -2,6 +2,9 @@ package br.com.alan.lojaSpringWeb.model;
 
 import br.com.alan.lojaSpringWeb.dto.DtoProduto;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+
+import java.util.Objects;
 
 @Entity
 @Table(name="Produtos")
@@ -23,11 +26,12 @@ public class Produto {
     }
 
     public  void atualizarInformacoes(DtoProduto dtoProduto) {
-        if(dtoProduto.produtoNome() != null){
-            this.produtoNome = dtoProduto.produtoNome();
+        this.produtoNome = Objects.requireNonNullElse(dtoProduto.produtoNome(), this.produtoNome);
+        if (dtoProduto.preco() != 0) {
+            setPreco(dtoProduto.preco());
         }
-        if(dtoProduto.preco() != null) {
-            this.preco = dtoProduto.preco();
+        if (dtoProduto.estoque() != 0) {
+            setEstoque(dtoProduto.estoque());
         }
     }
 
@@ -59,9 +63,8 @@ public class Produto {
         return estoque;
     }
 
-    public void setEstoque(int estoque) {
+    public void setEstoque(long estoque) {
         this.estoque = estoque;
     }
-
 
 }
